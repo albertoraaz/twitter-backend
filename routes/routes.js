@@ -57,6 +57,19 @@ async function bearerToken(auth) {
         const res = await get(requestConfig);
         const result = res.body.statuses;
 
+        // delete table if exists
+        connection.query(`DROP TABLE IF EXISTS tweet`, function (err, results, fields) {
+            if (err) {
+                console.log(err.message);
+            }
+        });
+        // create tweet table
+        connection.query(`CREATE TABLE tweet(id int NOT NULL AUTO_INCREMENT,created_at VARCHAR(30),twitter_text VARCHAR(200),user_screen_name VARCHAR(50),user_profile_image_url VARCHAR(250),user_name VARCHAR(250),PRIMARY KEY (id))`, function (err, results, fields) {
+            if (err) {
+                console.log(err.message);
+            }
+        });
+
         result.forEach(element => {
 
             // Create tweet object
@@ -68,18 +81,16 @@ async function bearerToken(auth) {
                 user_name: element.user.name
             };
 
-            // Insert tweet in mysql
-            connection.query('INSERT INTO tweet SET ?', tweet, (error, result) => {
+            // Insert tweet in database
+            connection.query(`INSERT INTO tweet SET ?`, tweet, (error, result) => {
                 if (error) throw error;
             });
 
         });
-
         if (res.statusCode !== 200) {
             throw new Error(res.json);
             return;
         }
-
     } catch (e) {
         console.error(`Could not get search results. An error occurred: ${e}`);
         process.exit(-1);
@@ -90,13 +101,11 @@ async function bearerToken(auth) {
 // Get tweet endpoint
 const router = app => {
     app.get('/tweets', (request, response) => {
-
-
+        // return tweets from database
         connection.query('SELECT * FROM tweet', (error, result) => {
             if (error) throw error;
             response.send(result);
         });
-
     });
 }
 
