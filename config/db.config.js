@@ -4,7 +4,8 @@ var connection = mysql.createConnection({
     insecureAuth : true,
     user: 'root',
     password: 'root',
-    database: 'tweets'
+    database: 'tweets',
+    charset: 'utf8mb4'
 });
 
 connection.connect(function (err) {

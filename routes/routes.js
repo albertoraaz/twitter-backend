@@ -62,7 +62,7 @@ async function bearerToken(auth) {
             // Create tweet object
             var tweet = {
                 created_at: element.created_at,
-                text: element.text,
+                twitter_text: element.text,
                 user_screen_name: element.user.screen_name,
                 user_profile_image_url: element.user.profile_image_url,
                 user_name: element.user.name
