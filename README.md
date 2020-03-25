@@ -11,7 +11,7 @@ React Express MySQL Node
 
 Run `npm install` in root directory for a dev server. 
 
-Run `node server.js` The app will automatically reload if you change any of the source files.
+Run `node server.js` to start the project.
 
 # Author
 
